@@ -495,9 +495,21 @@
 
     function updatePurse(amount) { $('myPurse').textContent = "₹" + (amount||0).toFixed(2); }
     function renderMySquad(squad) {
-        const c = $('mySquadList'); $('squadCount').textContent = `${squad.length}/${MAX_SQUAD}`;
+        const c = $('mySquadList'); 
+        $('squadCount').textContent = `${squad.length}/${MAX_SQUAD}`;
         c.innerHTML = squad.length ? '' : '<p class="text-gray-500 text-sm">Empty.</p>';
-        squad.forEach(p => c.innerHTML += `<div class="bg-slate-800 p-2 rounded flex items-center justify-between mb-1"><span class="text-sm font-bold">${p.name} <span class="text-[10px] text-gray-400">${p.country==="Overseas"?"✈️":""}</span></span><span class="text-xs text-yellow-500">${p.rating}</span></div>`);
+        
+        squad.forEach(p => c.innerHTML += `
+            <div class="bg-slate-800 p-2 rounded flex items-center justify-between mb-1">
+                <div class="flex items-center gap-2 overflow-hidden">
+                    <span class="text-sm font-bold truncate">${p.name}</span>
+                    <span class="text-[10px] text-blue-200 bg-blue-900/50 px-1.5 py-0.5 rounded border border-blue-800 shrink-0">
+                        ${p.role}
+                    </span>
+                    ${p.country==="Overseas" ? '<span class="text-[10px] shrink-0">✈️</span>' : ''}
+                </div>
+                <span class="text-sm text-yellow-500 font-bold ml-2 shrink-0">${p.rating}</span>
+            </div>`);
     }
   </script>
 </body>
