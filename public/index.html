@@ -2,445 +2,734 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_CODE" />
-
-  <title>IPL Auction Royale | Free Multiplayer Cricket Auction Game</title>
-  <meta name="title" content="IPL Auction Royale | Free Multiplayer Cricket Auction Game">
-  <meta name="description" content="Play the best real-time multiplayer Cricket Auction game online. Bid on 250+ players like Kohli & Bumrah, build your dream squad, and compete with friends. Free to play on mobile and PC.">
-  <meta name="keywords" content="IPL Auction Game, Cricket Auction Multiplayer, Online Cricket Manager, Fantasy Cricket Auction, IPL 2025 Auction Simulator, Free Cricket Game">
-  <meta name="robots" content="index, follow">
-  <meta name="language" content="English">
-  <meta name="author" content="IPL Auction Royale">
-
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ipl-auction-royale.onrender.com/"> <meta property="og:title" content="IPL Auction Royale - Host Your Own Cricket Auction">
-  <meta property="og:description" content="Challenge your friends! Real-time bidding, 250+ players, and strategy. Who will build the ultimate cricket team? Play for free now.">
-  <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/2503/2503509.png"> <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://ipl-auction-royale.onrender.com/"> <meta property="twitter:title" content="IPL Auction Royale | Multiplayer Cricket Game">
-  <meta property="twitter:description" content="Bid, Buy, Win! The ultimate multiplayer cricket auction experience.">
-  <meta property="twitter:image" content="https://cdn-icons-png.flaticon.com/512/2503/2503509.png">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "VideoGame",
-    "name": "IPL Auction Royale",
-    "url": "https://ipl-auction-royale.onrender.com/",
-    "description": "A real-time multiplayer cricket auction strategy game where players bid on cricketers to build the strongest team.",
-    "genre": ["Strategy", "Sports", "Simulation"],
-    "gamePlatform": "Web Browser",
-    "applicationCategory": "Game",
-    "operatingSystem": "Any",
-    "inLanguage": "en",
-    "author": {
-      "@type": "Person",
-      "name": "Admin"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD",
-      "availability": "https://schema.org/InStock"
-    }
-  }
-  </script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>IPL Auction Royale</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { background: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    /* CORE LAYOUT */
+    body { background: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; width: 100vw; display: flex; flex-direction: column; }
     h1, h2, h3, .stat-value { font-family: 'Teko', sans-serif; letter-spacing: 1px; }
-    .glass { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 12px; }
-    /* Mobile Overlay Styles */
-    .mobile-overlay { position: fixed; inset: 0; z-index: 50; background-color: rgba(15, 23, 42, 0.98); padding: 1rem; display: none; flex-direction: column; }
-    .mobile-overlay.active { display: flex; }
+    .glass { background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); }
+    
+    /* ANIMATIONS */
+    .slide-in-left { transform: translateX(0%) !important; }
+    .slide-out-left { transform: translateX(-100%); }
+    .slide-in-right { transform: translateX(0%) !important; }
+    .slide-out-right { transform: translateX(100%); }
+    .transition-transform { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     
     .pulse-red { animation: pulse-red 1s infinite; }
     @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); } 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); } }
+    
     .winning-bid { border: 2px solid #22c55e; background: rgba(34, 197, 94, 0.1); }
     .eliminated-team { opacity: 0.5; border: 1px solid #dc2626 !important; }
     .spectator-team { opacity: 0.7; border: 1px solid #eab308 !important; }
+    
     input[type=range] { -webkit-appearance: none; background: transparent; }
-    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: #eab308; cursor: pointer; margin-top: -8px; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: #eab308; cursor: pointer; margin-top: -10px; box-shadow: 0 0 10px rgba(234, 179, 8, 0.5); }
     input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #475569; border-radius: 2px; }
+    
     .stat-bar-bg { width: 100%; height: 6px; background: #334155; border-radius: 3px; overflow: hidden; }
     .stat-bar-fill { height: 100%; background: #fbbf24; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col items-center">
+<body>
 
-  <div id="auth" class="w-full max-w-md p-8 glass mt-20 z-10">
-    <div class="text-center mb-8"><h1 class="text-5xl font-bold text-yellow-400 mb-2">CRICKET AUCTION</h1><p class="text-gray-400">Build the highest rated team</p></div>
-    <div class="flex mb-6 border-b border-gray-600">
-      <button id="tabCreate" class="w-1/2 py-2 text-yellow-400 border-b-2 border-yellow-400 font-bold">Create Room</button>
-      <button id="tabJoin" class="w-1/2 py-2 text-gray-400 hover:text-white">Join Room</button>
-    </div>
-    <div id="formCreate" class="space-y-4">
-      <input id="createName" class="w-full p-3 rounded bg-slate-800 border border-slate-700 outline-none" placeholder="Your Team Name" />
-      <div class="text-xs text-gray-400 uppercase font-bold mt-2">Starting Purse (₹ Cr)</div>
-      <input id="createPurse" type="number" class="w-full p-3 rounded bg-slate-800 border border-slate-700 outline-none" value="100" />
-      <button id="btnCreate" class="w-full py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded mt-2">HOST GAME</button>
-    </div>
-    <div id="formJoin" class="space-y-4 hidden">
-      <input id="joinName" class="w-full p-3 rounded bg-slate-800 border border-slate-700 outline-none" placeholder="Your Team Name" />
-      <input id="joinCode" class="w-full p-3 rounded bg-slate-800 border border-slate-700 outline-none uppercase" placeholder="Room Code" />
-      <button id="btnJoin" class="w-full py-3 bg-blue-600 hover:bg-blue-700 font-bold rounded mt-2">JOIN GAME</button>
+  <div id="auth" class="absolute inset-0 z-50 flex flex-col items-center justify-center p-4 bg-slate-900 overflow-y-auto">
+    <div class="w-full max-w-md glass p-6 rounded-2xl border border-slate-700 shadow-2xl">
+        <div class="text-center mb-6">
+            <h1 class="text-6xl font-bold text-yellow-400 mb-1 drop-shadow-lg">IPL AUCTION</h1>
+            <p class="text-gray-400 tracking-widest uppercase text-xs">Build Your Legacy</p>
+        </div>
+        <div class="flex mb-4 bg-slate-800 rounded-lg p-1">
+            <button id="tabCreate" class="w-1/2 py-2 rounded-md font-bold transition-all bg-yellow-500 text-black shadow-lg">Create</button>
+            <button id="tabJoin" class="w-1/2 py-2 rounded-md font-bold transition-all text-gray-400 hover:text-white">Join</button>
+        </div>
+        <div id="formCreate" class="space-y-3">
+            <input id="createName" class="w-full p-3 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:border-yellow-500 transition text-lg" placeholder="Team Name" maxlength="30" />
+            <input id="createPurse" type="number" class="w-full p-3 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:border-yellow-500 transition text-lg font-mono" value="100" min="50" max="500" />
+            <button id="btnCreate" class="w-full py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black font-bold rounded-xl shadow-lg mt-2 text-lg">HOST GAME</button>
+        </div>
+        <div id="formJoin" class="space-y-3 hidden">
+            <input id="joinName" class="w-full p-3 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:border-blue-500 transition text-lg" placeholder="Team Name" maxlength="30" />
+            <input id="joinCode" class="w-full p-3 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:border-blue-500 transition text-lg uppercase font-mono tracking-widest" placeholder="Room Code" maxlength="10" />
+            <button id="btnJoin" class="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 font-bold rounded-xl shadow-lg mt-2 text-lg">JOIN GAME</button>
+        </div>
+        <div id="rejoinSection" class="hidden mt-4 pt-3 border-t border-gray-700">
+            <button id="btnRejoin" class="w-full py-2 bg-slate-700 hover:bg-slate-600 text-gray-300 font-bold rounded-lg text-sm border border-slate-600">REJOIN PREVIOUS GAME</button>
+        </div>
     </div>
   </div>
 
-  <div id="room" class="hidden w-full max-w-7xl p-2 lg:p-4 grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6 mt-14 lg:mt-4">
+  <div id="room" class="hidden h-full w-full flex-col relative bg-slate-900">
     
-    <div class="lg:hidden fixed top-0 left-0 right-0 bg-slate-900 border-b border-slate-700 p-3 flex justify-between items-center z-40 shadow-lg">
-        <button id="mobMenuBtn" class="text-white p-2">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-        </button>
-        <span class="font-bold text-yellow-400 text-xl tracking-wider">ROOM: <span id="mobRoomId" class="text-white">---</span></span>
-        <button id="mobSquadBtn" class="text-white p-2">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-        </button>
-    </div>
-
-    <div id="leftPanel" class="mobile-overlay lg:static lg:flex lg:col-span-1 lg:glass lg:p-4 lg:bg-slate-800/70 h-[85vh] flex-col relative">
-      <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-2">
-        <h3 class="text-lg font-bold">Competitors</h3>
-        <button id="closeLeftBtn" class="lg:hidden text-gray-400 hover:text-white">✕ CLOSE</button>
-      </div>
-
-      <div class="mb-4">
-        <div class="flex justify-between items-center hidden lg:flex">
-            <h2 class="text-2xl text-yellow-400">Room: <span id="displayRoomId" class="text-white">---</span></h2>
-            <button id="leaveBtn" class="text-xs bg-red-900 text-red-200 px-2 py-1 rounded hover:bg-red-800">Quit</button>
-        </div>
-        <button id="leaveBtnMob" class="lg:hidden w-full mb-2 py-2 bg-red-900 text-red-200 rounded">Quit Game</button>
-
-        <div class="text-sm text-gray-400 mt-1">Status: <span id="gameStatus">Waiting...</span></div>
-        <button id="startAuctionBtn" class="w-full mt-4 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded text-lg shadow-lg animate-pulse hidden">START AUCTION</button>
-      </div>
-      
-      <ul id="teamsList" class="space-y-2 overflow-y-auto flex-1 mb-4 pr-1"></ul>
-    </div>
-
-    <div class="lg:col-span-2 flex flex-col gap-4">
-      <div class="glass p-4 flex justify-between items-center bg-gradient-to-r from-slate-800 to-slate-900 shadow-md">
-        <div><p class="text-xs text-gray-400 uppercase">My Team</p><p id="myTeamName" class="text-xl font-bold text-white">---</p></div>
-        <div class="text-right"><p class="text-xs text-gray-400 uppercase">Purse</p><p id="myPurse" class="text-3xl font-bold text-green-400 font-mono">---</p></div>
-      </div>
-      
-      <div class="glass flex-1 flex flex-col items-center justify-center p-4 lg:p-6 relative min-h-[500px]">
+    <header class="h-14 bg-slate-900/95 backdrop-blur border-b border-slate-800 flex justify-between items-center px-3 z-40 shrink-0">
+        <button id="mobMenuBtn" class="p-2 -ml-2 text-gray-400 hover:text-white lg:hidden"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg></button>
         
-        <div id="eliminatedView" class="hidden text-center z-30 absolute inset-0 bg-black/90 flex flex-col items-center justify-center rounded-xl">
-            <h2 class="text-4xl lg:text-6xl font-bold text-red-600 mb-4">DISQUALIFIED</h2>
-            <p class="text-lg lg:text-xl text-gray-300">Run out of money</p>
-            <p class="text-sm text-gray-500 mt-4">You are now a spectator.</p>
+        <button id="headerStartBtn" class="hidden bg-green-600 hover:bg-green-500 text-white text-xs font-bold px-3 py-1 rounded shadow animate-pulse">START</button>
+
+        <div class="text-center">
+            <div class="text-[8px] text-gray-500 font-bold tracking-widest uppercase">ROOM</div>
+            <div class="text-lg font-bold text-white font-mono leading-none" id="displayRoomId">---</div>
         </div>
 
-        <div id="spectatorView" class="hidden text-center z-20 absolute inset-0 bg-black/80 flex flex-col items-center justify-center rounded-xl backdrop-blur-sm">
-            <h2 class="text-4xl lg:text-5xl font-bold text-yellow-400 mb-4">SPECTATOR MODE</h2>
-            <p class="text-lg text-gray-300">You have finished bidding.</p>
-        </div>
-
-        <div id="waitingMsg" class="text-center animate-pulse"><p class="text-2xl text-gray-400">Waiting for Host to start...</p></div>
-
-        <div id="cooldownView" class="hidden text-center">
-            <h2 class="text-4xl lg:text-5xl font-bold text-yellow-400 mb-2" id="soldStatusTitle">SOLD</h2>
-            <p class="text-lg lg:text-xl text-gray-300 mb-6" id="soldStatusText">---</p>
-            <div class="w-16 h-16 border-4 border-t-yellow-400 border-white/20 rounded-full animate-spin mx-auto"></div>
-            <p class="mt-4 text-sm text-gray-500">Next player in 3s...</p>
-        </div>
-
-        <div id="auctionView" class="hidden w-full flex flex-col items-center">
-          <div id="timerRing" class="absolute top-4 right-4 w-12 h-12 lg:w-16 lg:h-16 rounded-full border-4 border-gray-600 flex items-center justify-center text-lg lg:text-2xl font-bold bg-slate-800 z-10 shadow-lg">10</div>
-          
-          <div class="flex flex-col lg:flex-row gap-4 lg:gap-6 items-center mb-6 w-full max-w-lg">
-             <div class="relative">
-                <img id="playerImg" src="" class="w-32 h-32 lg:w-40 lg:h-40 object-cover rounded-full border-4 border-yellow-500 shadow-2xl bg-slate-800" />
-                <span id="playerRole" class="absolute bottom-0 right-0 bg-blue-600 text-xs px-2 py-1 rounded-full uppercase font-bold shadow">---</span>
-             </div>
-             <div class="flex-1 space-y-2 text-center lg:text-left w-full">
-                 <h2 id="playerName" class="text-3xl lg:text-4xl font-bold mb-1 leading-none text-white">---</h2>
-                 
-                 <div class="flex justify-center lg:justify-start gap-2">
-                     <span id="countryBadge" class="text-xs bg-slate-700 px-2 py-1 rounded border border-slate-600 text-gray-300">---</span>
-                     <span id="statusBadge" class="text-xs bg-slate-700 px-2 py-1 rounded border border-slate-600 text-gray-300">---</span>
-                 </div>
-
-                 <p class="text-gray-400 text-sm mt-1">Base: <span id="basePrice" class="text-white font-bold">---</span> | Rating: <span id="playerRating" class="text-yellow-400 font-bold text-xl">0</span></p>
-                 
-                 <div class="space-y-1 mt-2 w-full px-4 lg:px-0">
-                    <div class="flex justify-between text-xs text-gray-400"><span>BAT</span><span id="statBat">0</span></div>
-                    <div class="stat-bar-bg"><div id="barBat" class="stat-bar-fill" style="width: 0%"></div></div>
-                    <div class="flex justify-between text-xs text-gray-400"><span>BOWL</span><span id="statBowl">0</span></div>
-                    <div class="stat-bar-bg"><div id="barBowl" class="stat-bar-fill" style="width: 0%"></div></div>
-                    <div class="flex justify-between text-xs text-gray-400"><span>FIELD</span><span id="statField">0</span></div>
-                    <div class="stat-bar-bg"><div id="barField" class="stat-bar-fill" style="width: 0%"></div></div>
-                 </div>
-             </div>
-          </div>
-
-          <div class="w-full bg-slate-800/50 rounded-lg p-3 lg:p-4 mb-4 border border-slate-700 text-center shadow-inner">
-            <p class="text-sm text-gray-400 uppercase mb-1">Current Bid</p>
-            <div class="flex flex-col lg:flex-row items-center justify-center gap-2">
-              <span id="currentBid" class="text-4xl font-bold text-yellow-400 font-mono">₹0.00</span>
-              <span id="highestBidderBadge" class="text-xs bg-gray-700 px-2 py-1 rounded mt-1 lg:mt-0">No Bids</span>
+        <div class="flex items-center gap-3">
+            <div class="text-right">
+                <div class="text-[8px] text-gray-500 font-bold uppercase">PURSE</div>
+                <div id="myPurse" class="text-lg font-bold text-green-400 font-mono leading-none">₹---</div>
             </div>
-          </div>
-          
-          <div class="w-full max-w-md bg-slate-800 p-4 rounded-lg border border-slate-700 mb-4 shadow-xl">
-             <div class="flex justify-between text-xs text-gray-400 mb-2"><span>Raise Bid</span><span id="sliderValueDisplay" class="text-yellow-400 font-bold text-lg">---</span></div>
-             <input id="bidSlider" type="range" step="0.25" class="w-full mb-4 h-6">
-             <div class="flex gap-3">
-                <button id="skipBtn" class="flex-1 py-3 rounded bg-red-900/50 hover:bg-red-800 border border-red-800 text-red-200 font-bold transition">SKIP</button>
-                <button id="bidBtn" class="w-2/3 py-3 rounded bg-green-600 hover:bg-green-700 text-white font-bold transition shadow-lg shadow-green-900/20 active:scale-95">PLACE BID</button>
-             </div>
-             <button id="finishSquadBtn" class="w-full mt-3 py-2 bg-yellow-600 hover:bg-yellow-500 text-white font-bold rounded hidden">FINISH & SPECTATE</button>
-          </div>
-          <p id="skipStatus" class="text-xs text-gray-500 mt-2 h-4 text-center"></p>
+            <button id="mobSquadBtn" class="p-2 -mr-2 text-gray-400 hover:text-white relative lg:hidden">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                <span id="squadBadgeCount" class="absolute top-0 right-0 bg-blue-600 text-[9px] text-white px-1.5 rounded-full font-bold border border-slate-900">0</span>
+            </button>
         </div>
+    </header>
 
-        <div id="selectionView" class="hidden w-full flex flex-col items-center h-full p-4 overflow-y-auto">
-             <h2 class="text-3xl text-yellow-400 font-bold mb-2">SELECT SQUAD</h2>
-             <div class="flex gap-4 text-sm text-gray-400 mb-4">
-                 <span id="selectionCount">0 / 11 Selected</span>
-                 <span id="overseasCount" class="text-blue-400">0 / 4 Overseas</span>
-             </div>
-             <div id="selectionList" class="w-full grid grid-cols-1 lg:grid-cols-2 gap-2 mb-4"></div>
-             <div id="leadershipControls" class="w-full bg-slate-800 p-4 rounded mb-4 hidden border border-slate-600">
-                 <h3 class="text-yellow-400 font-bold mb-3 border-b border-gray-600 pb-1">Assign Leadership</h3>
-                 <div class="mb-4"><label class="text-xs text-gray-300 block mb-1">Captain (2x)</label><select id="selectCaptain" class="w-full bg-slate-900 text-white p-2 rounded outline-none border border-slate-600"></select></div>
-                 <div><label class="text-xs text-gray-300 block mb-1">Vice-Captain (1.5x)</label><select id="selectViceCaptain" class="w-full bg-slate-900 text-white p-2 rounded outline-none border border-slate-600"></select></div>
-             </div>
-             <button id="submitTeamBtn" class="w-full py-3 bg-green-600 font-bold rounded disabled:opacity-50 disabled:cursor-not-allowed transition hover:bg-green-700" disabled>SUBMIT FINAL TEAM</button>
-        </div>
-
-        <div id="resultView" class="hidden w-full flex flex-col items-center justify-center text-center">
-            <h2 class="text-5xl font-bold text-yellow-400 mb-4">WINNER</h2>
-            <div id="winnerName" class="text-6xl font-bold text-white mb-2">---</div>
-            <div id="winnerScore" class="text-2xl text-green-400 mb-8 font-mono">--- points</div>
-            <div class="w-full bg-slate-800 p-4 rounded-lg">
-                <h3 class="text-lg font-bold border-b border-gray-600 pb-2 mb-2">Rankings</h3>
-                <div id="rankingList" class="space-y-2 text-left"></div>
+    <main class="flex-1 relative w-full overflow-hidden flex flex-col lg:flex-row">
+        
+        <div id="leftDrawer" class="fixed inset-y-0 left-0 w-72 bg-slate-900 border-r border-slate-800 z-50 transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col lg:relative lg:translate-x-0 lg:w-80 lg:shadow-none lg:z-0">
+            <div class="p-3 border-b border-slate-800 flex justify-between items-center bg-slate-950 lg:hidden">
+                <span class="font-bold text-yellow-400">GAME MENU</span>
+                <button id="closeLeftBtn" class="text-gray-400 hover:text-white text-xl">&times;</button>
+            </div>
+            <div class="p-4 border-b border-slate-800">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs text-gray-500 font-bold">STATUS</span>
+                    <span class="text-xs text-blue-400 font-bold" id="gameStatus">Waiting...</span>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto p-2 scrollbar-hide">
+                <div class="text-[10px] text-gray-500 font-bold px-2 mb-2 uppercase">Competitors</div>
+                <div id="teamsList" class="space-y-2"></div>
+            </div>
+            <div class="p-3 border-t border-slate-800 bg-slate-950 lg:bg-slate-900">
+                <button id="leaveBtn" class="w-full py-2 bg-red-900/50 hover:bg-red-800 border border-red-900 text-red-100 font-bold rounded text-sm">Exit Game</button>
             </div>
         </div>
 
-      </div>
-    </div>
+        <div class="flex-1 relative flex flex-col bg-slate-900/50">
+            
+            <div id="disconnect-alert" class="hidden absolute top-0 left-0 right-0 bg-red-600 text-white text-center py-2 text-sm z-50">
+                Connection lost. Reconnecting...
+            </div>
+            
+            <div id="lobbyView" class="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 text-center">
+                <p id="waitingMsg" class="text-2xl text-gray-500 font-light animate-pulse mb-6">Waiting for Host...</p>
+                <button id="centerStartBtn" class="hidden px-8 py-4 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl shadow-2xl text-xl animate-bounce transform transition hover:scale-105">
+                    START AUCTION
+                </button>
+                <p id="hostHint" class="hidden text-gray-500 text-sm mt-4">You are the host. Click to begin.</p>
+            </div>
 
-    <div id="rightPanel" class="mobile-overlay lg:static lg:flex lg:col-span-1 lg:glass lg:p-4 lg:bg-slate-800/70 h-[85vh] flex-col">
-      <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-2">
-        <h3 class="text-lg font-bold">My Squad <span id="squadCount" class="text-xs bg-blue-600 px-2 rounded-full ml-2">0/25</span></h3>
-        <button id="closeRightBtn" class="lg:hidden text-gray-400 hover:text-white">✕ CLOSE</button>
-      </div>
-      <div id="mySquadList" class="space-y-2 overflow-y-auto flex-1"></div>
-    </div>
+            <div id="eliminatedView" class="hidden absolute inset-0 z-30 bg-black/95 flex flex-col items-center justify-center text-center p-6">
+                <h2 class="text-5xl font-bold text-red-600 mb-2">DISQUALIFIED</h2>
+                <p class="text-lg text-gray-400">Run out of money.</p>
+            </div>
+            <div id="spectatorView" class="hidden absolute inset-0 z-30 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6">
+                <h2 class="text-4xl font-bold text-yellow-400 mb-2">SPECTATOR MODE</h2>
+                <p class="text-gray-300">You have completed your bidding.</p>
+            </div>
+            <div id="cooldownView" class="hidden absolute inset-0 z-30 bg-slate-900 flex flex-col items-center justify-center text-center p-4">
+                <h2 class="text-5xl font-bold mb-2" id="soldStatusTitle">SOLD</h2>
+                <p class="text-xl text-gray-300" id="soldStatusText">---</p>
+            </div>
+
+            <div id="auctionView" class="hidden flex-col h-full p-2 lg:p-6 overflow-y-auto">
+                <div class="w-full max-w-2xl mx-auto glass rounded-xl border border-slate-700 overflow-hidden flex flex-col flex-1 max-h-[600px]">
+                    <div class="flex p-4 gap-4 items-center bg-gradient-to-br from-slate-800 to-slate-900 border-b border-slate-700 relative">
+                        <div id="timerRing" class="absolute top-2 right-2 w-10 h-10 rounded-full bg-slate-800 border-2 border-slate-600 flex items-center justify-center text-lg font-bold shadow-lg text-white">10</div>
+                        <img id="playerImg" src="" class="w-24 h-24 lg:w-32 lg:h-32 object-cover rounded-lg shadow-lg border border-slate-600 bg-slate-800 flex-shrink-0" />
+                        <div class="flex-1 min-w-0">
+                            <h2 id="playerName" class="text-2xl lg:text-4xl font-bold text-white leading-none truncate">---</h2>
+                            <div class="flex flex-wrap gap-1 mt-1 mb-2">
+                                <span id="playerRole" class="text-[10px] bg-blue-600 px-1.5 py-0.5 rounded uppercase font-bold text-white">---</span>
+                                <span id="countryBadge" class="text-[10px] bg-slate-700 px-1.5 py-0.5 rounded border border-slate-600 text-gray-300">---</span>
+                                <span id="statusBadge" class="text-[10px] bg-slate-700 px-1.5 py-0.5 rounded border border-slate-600 text-gray-300">---</span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <div><div class="flex justify-between text-[8px] text-gray-400">BAT <span id="statBat">0</span></div><div class="stat-bar-bg h-1"><div id="barBat" class="stat-bar-fill"></div></div></div>
+                                <div><div class="flex justify-between text-[8px] text-gray-400">BWL <span id="statBowl">0</span></div><div class="stat-bar-bg h-1"><div id="barBowl" class="stat-bar-fill"></div></div></div>
+                                <div><div class="flex justify-between text-[8px] text-gray-400">FLD <span id="statField">0</span></div><div class="stat-bar-bg h-1"><div id="barField" class="stat-bar-fill"></div></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-center items-center p-4 bg-slate-900/50">
+                        <div class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Current Highest Bid</div>
+                        <div id="currentBid" class="text-5xl lg:text-6xl font-bold text-yellow-400 font-mono tracking-tighter">₹0.00</div>
+                        <div id="highestBidderBadge" class="text-xs bg-slate-800 text-gray-400 px-3 py-1 rounded-full mt-2 border border-slate-700">No Bids Yet</div>
+                        <div class="text-xs text-gray-500 mt-2">Base: <span id="basePrice" class="text-gray-300">---</span> | Rating: <span id="playerRating" class="text-yellow-500">0</span></div>
+                    </div>
+                    <div class="p-4 bg-slate-800 border-t border-slate-700">
+                        <div class="flex justify-between text-xs text-gray-400 mb-2"><span>Raise Bid</span><span id="sliderValueDisplay" class="text-yellow-400 font-bold text-lg">---</span></div>
+                        <input id="bidSlider" type="range" step="0.25" class="w-full mb-4 accent-yellow-500 h-2 bg-slate-600 rounded-lg appearance-none">
+                        <div class="flex gap-3 h-12">
+                            <button id="skipBtn" class="flex-1 rounded-lg bg-red-900/30 hover:bg-red-900/50 border border-red-900 text-red-400 font-bold transition text-sm">SKIP</button>
+                            <button id="bidBtn" class="w-2/3 rounded-lg bg-green-600 hover:bg-green-500 text-white font-bold transition shadow-lg text-lg shadow-green-900/20">BID</button>
+                        </div>
+                        <button id="finishSquadBtn" class="w-full mt-3 py-2 bg-yellow-600 hover:bg-yellow-500 text-white font-bold rounded text-sm hidden">FINISH & SPECTATE</button>
+                        <p id="skipStatus" class="text-[10px] text-gray-500 mt-2 h-3 text-center"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="selectionView" class="hidden absolute inset-0 bg-slate-900 z-20 flex flex-col p-4 overflow-y-auto">
+                 <h2 class="text-2xl text-yellow-400 font-bold mb-2 text-center">FINAL SQUAD SELECTION</h2>
+                 <div class="flex justify-between text-xs text-gray-400 mb-4 px-1 bg-slate-800 p-2 rounded">
+                     <span id="selectionCount">0 / 11 Selected</span>
+                     <span id="overseasCount" class="text-blue-400">0 / 4 Overseas</span>
+                 </div>
+                 <div id="selectionList" class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4"></div>
+                 <div id="leadershipControls" class="bg-slate-800 p-4 rounded-xl border border-slate-700 hidden mb-20">
+                     <h3 class="text-yellow-400 font-bold text-sm mb-3 border-b border-gray-600 pb-1">LEADERSHIP</h3>
+                     <div class="grid grid-cols-2 gap-4">
+                         <div><label class="text-[10px] text-gray-400 block mb-1">CAPTAIN (2x)</label><select id="selectCaptain" class="w-full bg-slate-900 text-white text-sm p-2 rounded border border-slate-600 outline-none"></select></div>
+                         <div><label class="text-[10px] text-gray-400 block mb-1">VICE-CAPT (1.5x)</label><select id="selectViceCaptain" class="w-full bg-slate-900 text-white text-sm p-2 rounded border border-slate-600 outline-none"></select></div>
+                     </div>
+                     <button id="submitTeamBtn" class="w-full mt-4 py-3 bg-green-600 font-bold rounded-lg disabled:opacity-50 text-white">SUBMIT TEAM</button>
+                 </div>
+            </div>
+
+            <div id="resultView" class="hidden absolute inset-0 bg-slate-900 z-20 flex flex-col items-center justify-center p-6 text-center">
+                <h2 class="text-6xl font-bold text-yellow-400 mb-2 drop-shadow-lg">WINNER</h2>
+                <div id="winnerName" class="text-4xl font-bold text-white mb-2">---</div>
+                <div id="winnerScore" class="text-xl text-green-400 mb-8 font-mono">--- points</div>
+                <div class="w-full max-w-md bg-slate-800 p-4 rounded-xl border border-slate-700 h-1/2 overflow-y-auto">
+                    <h3 class="text-sm font-bold border-b border-gray-600 pb-2 mb-2 text-left text-gray-400">LEADERBOARD</h3>
+                    <div id="rankingList" class="space-y-2 text-left text-sm"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="rightDrawer" class="fixed inset-y-0 right-0 w-72 bg-slate-900 border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col lg:relative lg:translate-x-0 lg:w-80 lg:shadow-none lg:z-0">
+            <div class="p-3 border-b border-slate-800 flex justify-between items-center bg-slate-950 lg:hidden">
+                <span class="font-bold text-blue-400">MY SQUAD</span>
+                <button id="closeRightBtn" class="text-gray-400 hover:text-white text-xl">&times;</button>
+            </div>
+            <div class="p-3 bg-slate-800 text-[10px] flex justify-between text-gray-400 uppercase tracking-widest font-bold"><span>Player</span><span>My Team (<span id="squadCount">0/25</span>)</span></div>
+            <div id="mySquadList" class="flex-1 overflow-y-auto p-2 space-y-1 scrollbar-hide"><p class="text-gray-600 text-xs text-center mt-10">No players bought yet.</p></div>
+        </div>
+        <div id="drawerBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm lg:hidden"></div>
+    </main>
   </div>
-
-  <audio id="sfx-bid" src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3?filename=button-pressed-38129.mp3"></audio>
-  <audio id="sfx-sold" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_929ace1808.mp3?filename=judgement-6241.mp3"></audio>
-  <audio id="sfx-new" src="https://cdn.pixabay.com/download/audio/2022/03/24/audio_ff7d813205.mp3?filename=pop-up-something-160353.mp3"></audio>
 
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script>
-    const socket = io();
-    const MAX_SQUAD = 25;
-    const MIN_PLAY = 18; 
-    const MAX_OVERSEAS_SQUAD = 8;
-    const MAX_OVERSEAS_P11 = 4;
+    // --- APP LOGIC (FIXED VERSION) ---
+    let myUserId = localStorage.getItem('ipl_user_id');
+    if (!myUserId) { 
+        myUserId = 'u_' + Date.now().toString(36) + Math.random().toString(36).substr(2); 
+        localStorage.setItem('ipl_user_id', myUserId); 
+    }
     
-    let myId = null;
-    let myData = null;
-    let currentRoom = null;
-    let selectedBid = 0;
-    let mySquadArr = [];
-    let gCurrentBid = 0;
-    let gCurrentBidderId = null;
-    let gCurrentPlayer = null;
+    const lastRoom = localStorage.getItem('ipl_last_room');
+    if(lastRoom) { 
+        document.getElementById('rejoinSection').classList.remove('hidden'); 
+        document.getElementById('btnRejoin').onclick = () => { 
+            socket.emit('rejoin-game', { userId: myUserId, roomId: lastRoom }); 
+        }; 
+    }
 
-    const $ = id => document.getElementById(id);
-    const playSound = (id) => { const a=$(id); if(a) { a.currentTime=0; a.play().catch(e=>{}); } };
-    const notify = (msg, type="info") => {
-      let bg = type==="success"?"#16a34a":type==="error"?"#dc2626":"#1e293b";
-      Toastify({ text: msg, duration: 3000, gravity: "top", position: "center", style: { background: bg, borderRadius: "8px" } }).showToast();
+    const socket = io({ 
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionAttempts: 10
+    });
+    
+    // Connection status handling
+    socket.on('connect', () => {
+        document.getElementById('disconnect-alert').classList.add('hidden');
+        console.log('Connected to server');
+    });
+    
+    socket.on('disconnect', () => {
+        document.getElementById('disconnect-alert').classList.remove('hidden');
+        console.log('Disconnected from server');
+    });
+    
+    socket.on('reconnect', (attemptNumber) => {
+        console.log('Reconnected after', attemptNumber, 'attempts');
+        if (currentRoom) {
+            // Clear any stuck UI states
+            clearAllViews();
+            socket.emit('rejoin-game', { userId: myUserId, roomId: currentRoom });
+        }
+    });
+    
+    // New event to clear cooldown on rejoin
+    socket.on('clear-cooldown', () => {
+        console.log('Clearing cooldown view');
+        if (cooldownTimeout) {
+            clearTimeout(cooldownTimeout);
+            cooldownTimeout = null;
+        }
+        const cooldownView = document.getElementById('cooldownView');
+        cooldownView.classList.add('hidden');
+        cooldownView.style.display = 'none';
+    });
+    
+    function clearAllViews() {
+        // Clear cooldown
+        if (cooldownTimeout) {
+            clearTimeout(cooldownTimeout);
+            cooldownTimeout = null;
+        }
+        document.getElementById('cooldownView').classList.add('hidden');
+        document.getElementById('cooldownView').style.display = 'none';
+        document.getElementById('lobbyView').classList.add('hidden');
+        document.getElementById('eliminatedView').classList.add('hidden');
+        document.getElementById('spectatorView').classList.add('hidden');
+        document.getElementById('selectionView').classList.add('hidden');
+        document.getElementById('resultView').classList.add('hidden');
+    }
+    
+    // UI Refs
+    const els = { 
+        leftDrawer: document.getElementById('leftDrawer'), 
+        rightDrawer: document.getElementById('rightDrawer'), 
+        backdrop: document.getElementById('drawerBackdrop'), 
+        auth: document.getElementById('auth'), 
+        room: document.getElementById('room'), 
+        teamsList: document.getElementById('teamsList'), 
+        squadList: document.getElementById('mySquadList'), 
+        slider: document.getElementById('bidSlider') 
     };
 
-    // --- UI TABS & MOBILE MENUS ---
-    $('tabCreate').onclick = () => { $('formCreate').classList.remove('hidden'); $('formJoin').classList.add('hidden'); };
-    $('tabJoin').onclick = () => { $('formCreate').classList.add('hidden'); $('formJoin').classList.remove('hidden'); };
+    const MAX_SQUAD=25, MIN_PLAY=11, MAX_OS_SQUAD=8, MAX_OS_P11=4, BID_INCREMENT=0.25;
+    let myId=myUserId, myData=null, currentRoom=null, selectedBid=0, gCurrentBid=0, gCurrentBidderId=null, gCurrentPlayer=null, mySquadArr=[];
+    let cooldownTimeout = null;
 
-    // Mobile Menu Logic
-    $('mobMenuBtn').onclick = () => $('leftPanel').classList.add('active');
-    $('closeLeftBtn').onclick = () => $('leftPanel').classList.remove('active');
-    $('mobSquadBtn').onclick = () => $('rightPanel').classList.add('active');
-    $('closeRightBtn').onclick = () => $('rightPanel').classList.remove('active');
+    function toggleLeft() { 
+        const isOpen = els.leftDrawer.classList.contains('slide-in-left');
+        if (isOpen) {
+            els.leftDrawer.classList.remove('slide-in-left');
+            toggleBackdrop(false);
+        } else {
+            els.leftDrawer.classList.add('slide-in-left');
+            els.rightDrawer.classList.remove('slide-in-right'); // Close right if open
+            toggleBackdrop(true);
+        }
+    }
+    
+    function toggleRight() { 
+        const isOpen = els.rightDrawer.classList.contains('slide-in-right');
+        if (isOpen) {
+            els.rightDrawer.classList.remove('slide-in-right');
+            toggleBackdrop(false);
+        } else {
+            els.rightDrawer.classList.add('slide-in-right');
+            els.leftDrawer.classList.remove('slide-in-left'); // Close left if open
+            toggleBackdrop(true);
+        }
+    }
+    
+    function toggleBackdrop(show) { 
+        els.backdrop.classList.toggle('hidden', !show); 
+        if(!show) { 
+            els.leftDrawer.classList.remove('slide-in-left'); 
+            els.rightDrawer.classList.remove('slide-in-right'); 
+        } 
+    }
+    
+    document.getElementById('mobMenuBtn').onclick = toggleLeft; 
+    document.getElementById('closeLeftBtn').onclick = toggleLeft;
+    document.getElementById('mobSquadBtn').onclick = toggleRight; 
+    document.getElementById('closeRightBtn').onclick = toggleRight;
+    els.backdrop.onclick = () => toggleBackdrop(false);
 
-    // Button Actions
-    $('btnCreate').onclick = () => {
-      const name = $('createName').value;
-      if(!name) return notify("Enter Name", "error");
-      socket.emit('create-room', { teamName: name, purse: $('createPurse').value || 100 });
+    document.getElementById('tabCreate').onclick=()=>{ 
+        document.getElementById('formCreate').classList.remove('hidden'); 
+        document.getElementById('formJoin').classList.add('hidden');
+        document.getElementById('tabCreate').className = 'w-1/2 py-2 rounded-md font-bold transition-all bg-yellow-500 text-black shadow-lg';
+        document.getElementById('tabJoin').className = 'w-1/2 py-2 rounded-md font-bold transition-all text-gray-400 hover:text-white';
+    };
+    
+    document.getElementById('tabJoin').onclick=()=>{ 
+        document.getElementById('formCreate').classList.add('hidden'); 
+        document.getElementById('formJoin').classList.remove('hidden');
+        document.getElementById('tabJoin').className = 'w-1/2 py-2 rounded-md font-bold transition-all bg-yellow-500 text-black shadow-lg';
+        document.getElementById('tabCreate').className = 'w-1/2 py-2 rounded-md font-bold transition-all text-gray-400 hover:text-white';
     };
 
-    $('btnJoin').onclick = () => {
-      const name = $('joinName').value;
-      const code = $('joinCode').value;
-      if(!name || !code) return notify("Enter Name & Code", "error");
-      socket.emit('join-room', { roomId: code.toUpperCase(), teamName: name });
+    document.getElementById('btnCreate').onclick = () => {
+        const teamName = document.getElementById('createName').value.trim();
+        const purse = document.getElementById('createPurse').value;
+        
+        if (!teamName) {
+            return Toastify({ text: "Enter team name", style: { background: "#dc2626" } }).showToast();
+        }
+        
+        socket.emit('create-room', { teamName, purse, userId: myUserId });
+    };
+    
+    document.getElementById('btnJoin').onclick = () => {
+        const teamName = document.getElementById('joinName').value.trim();
+        const roomCode = document.getElementById('joinCode').value.trim().toUpperCase();
+        
+        if (!teamName || !roomCode) {
+            return Toastify({ text: "Enter team name and room code", style: { background: "#dc2626" } }).showToast();
+        }
+        
+        socket.emit('join-room', { roomId: roomCode, teamName, userId: myUserId });
+    };
+    
+    const quitGame = () => { 
+        if(confirm("Leave this game? You can rejoin later.")) { 
+            socket.emit('leave-room', { roomId: currentRoom, userId: myUserId }); 
+            localStorage.removeItem('ipl_last_room'); 
+            location.reload(); 
+        } 
+    };
+    
+    document.getElementById('leaveBtn').onclick = quitGame;
+    
+    document.getElementById('finishSquadBtn').onclick = () => { 
+        if(confirm("Stop bidding and become spectator?")) {
+            socket.emit('finish-bidding-for-me', { roomId: currentRoom, userId: myUserId }); 
+        }
     };
 
-    $('leaveBtn').onclick = () => { if(confirm("Quit game?")) { socket.emit('leave-room', { roomId: currentRoom }); location.reload(); } };
-    $('leaveBtnMob').onclick = () => { if(confirm("Quit game?")) { socket.emit('leave-room', { roomId: currentRoom }); location.reload(); } };
-    $('finishSquadBtn').onclick = () => { if(confirm("Stop bidding?")) socket.emit('finish-bidding-for-me', { roomId: currentRoom }); };
+    socket.on('error-message', (msg) => {
+        Toastify({ text: msg, duration: 3000, style: { background: "#dc2626" } }).showToast();
+    });
 
-    socket.on('room-created', initGame);
+    socket.on('room-created', initGame); 
     socket.on('joined-room', initGame);
-
+    
     function initGame({ roomId, team, isHost }) {
-      $('auth').style.display = 'none';
-      $('room').style.display = 'grid'; // Grid layout handles desktop columns
-      currentRoom = roomId;
-      myId = team.id;
-      myData = team;
-      $('displayRoomId').textContent = roomId;
-      $('mobRoomId').textContent = roomId; // Mobile Header ID
-      $('myTeamName').textContent = team.name;
-      updatePurse(team.purse);
-      if(isHost) $('startAuctionBtn').style.display = 'block';
+        // Clear any stuck views first
+        clearAllViews();
+        
+        els.auth.style.display = 'none'; 
+        els.room.classList.remove('hidden'); 
+        els.room.classList.add('flex');
+        
+        currentRoom = roomId; 
+        localStorage.setItem('ipl_last_room', roomId); 
+        myId = team.id; 
+        myData = team;
+        
+        document.getElementById('displayRoomId').textContent = roomId; 
+        updatePurse(team.purse);
+        
+        if(isHost) {
+            document.getElementById('centerStartBtn').classList.remove('hidden');
+            document.getElementById('headerStartBtn').classList.remove('hidden');
+            document.getElementById('hostHint').classList.remove('hidden');
+            document.getElementById('waitingMsg').classList.add('hidden');
+            
+            document.getElementById('centerStartBtn').onclick = () => socket.emit('start-auction', { roomId: currentRoom });
+            document.getElementById('headerStartBtn').onclick = () => socket.emit('start-auction', { roomId: currentRoom });
+        }
     }
 
     socket.on('teams-updated', (teams) => {
-      const list = $('teamsList'); list.innerHTML = '';
-      let meExists = false;
-      teams.forEach(t => {
-        if(t.id === myId) {
-            meExists = true;
-            myData = t;
-            mySquadArr = t.squad; 
-            updatePurse(t.purse);
-            renderMySquad(t.squad);
-            if(t.isEliminated) { $('eliminatedView').classList.remove('hidden'); refreshControls(); }
-            else $('eliminatedView').classList.add('hidden');
-            if(t.isFinishedBidding) { $('spectatorView').classList.remove('hidden'); refreshControls(); }
-            else $('spectatorView').classList.add('hidden');
+        els.teamsList.innerHTML = ''; 
+        let meExists = false;
+        
+        teams.forEach(t => {
+            if(t.id === myId) {
+                meExists = true; 
+                myData = t; 
+                mySquadArr = t.squad; 
+                updatePurse(t.purse); 
+                renderMySquad(t.squad);
+                
+                document.getElementById('eliminatedView').classList.toggle('hidden', !t.isEliminated);
+                document.getElementById('spectatorView').classList.toggle('hidden', !t.isFinishedBidding);
+            }
+            
+            const badge = t.isEliminated 
+                ? '<span class="text-[9px] bg-red-600 px-1 rounded">OUT</span>' 
+                : (t.isFinishedBidding ? '<span class="text-[9px] bg-yellow-600 px-1 rounded">DONE</span>' : '');
+            
+            const div = document.createElement('div'); 
+            div.className = `p-2 rounded flex justify-between items-center bg-slate-800 border border-slate-700`;
+            div.innerHTML = `<div><div class="font-bold text-xs text-white">${escapeHtml(t.name)} ${badge}</div><div class="text-[9px] text-gray-400">${t.squad.length}/${MAX_SQUAD}</div></div><div class="text-green-400 font-mono text-xs">₹${t.purse.toFixed(2)}</div>`;
+            els.teamsList.appendChild(div);
+        });
+        
+        if(!meExists && currentRoom) { 
+            alert("You have been removed from the game."); 
+            localStorage.removeItem('ipl_last_room'); 
+            location.reload(); 
         }
-        let badge = t.isEliminated ? '<span class="text-xs bg-red-600 text-white px-1 rounded ml-2">OUT</span>' : (t.isFinishedBidding ? '<span class="text-xs bg-yellow-600 text-white px-1 rounded ml-2">DONE</span>' : (t.submitted11 ? '<span class="text-xs bg-green-600 text-white px-1 rounded ml-2">READY</span>' : ''));
-        const li = document.createElement('div');
-        li.className = `p-3 rounded mb-2 flex justify-between items-center ${t.id === myId ? 'bg-slate-700 border-slate-500' : 'bg-slate-800'} ${t.isEliminated?'eliminated-team':''}`;
-        li.innerHTML = `<div><span class="font-bold">${t.name}</span>${badge}<span class="text-xs text-gray-400 block">${t.squad.length}/${MAX_SQUAD} players</span></div><span class="text-green-400 font-mono">₹${t.purse ? t.purse.toFixed(2) : 0}</span>`;
-        list.appendChild(li);
-      });
-      if(!meExists && currentRoom) { alert("You left."); location.reload(); }
-      
-      // Check MIN_PLAY (18)
-      if(myData.squad.length >= MIN_PLAY && !myData.isFinishedBidding && !myData.isEliminated) $('finishSquadBtn').classList.remove('hidden');
-      else $('finishSquadBtn').classList.add('hidden');
-      
-      refreshControls();
+        
+        const btn = document.getElementById('finishSquadBtn');
+        if(myData && myData.squad.length >= MIN_PLAY && !myData.isFinishedBidding && !myData.isEliminated) {
+            btn.classList.remove('hidden'); 
+        } else {
+            btn.classList.add('hidden');
+        }
+        
+        refreshControls();
     });
 
-    $('startAuctionBtn').onclick = () => socket.emit('start-auction', { roomId: currentRoom });
-    socket.on('auction-started-signal', () => { $('startAuctionBtn').style.display = 'none'; $('waitingMsg').style.display='none'; $('auctionView').style.display='flex'; });
+    socket.on('auction-started-signal', () => { 
+        document.getElementById('lobbyView').classList.add('hidden');
+        document.getElementById('headerStartBtn').classList.add('hidden');
+        document.getElementById('auctionView').classList.remove('hidden'); 
+        document.getElementById('auctionView').style.display='flex';
+        document.getElementById('gameStatus').textContent = "Live"; 
+    });
 
     socket.on('new-player', ({ player, currentBid }) => {
-      $('cooldownView').style.display='none'; $('auctionView').style.display='flex';
-      if(myData.isFinishedBidding) $('spectatorView').classList.remove('hidden');
-      gCurrentPlayer = player;
-      
-      $('playerImg').src = player.img;
-      $('playerName').textContent = player.name;
-      $('playerRole').textContent = player.role;
-      $('playerRating').textContent = player.rating;
-      $('basePrice').textContent = player.basePrice + " Cr";
-      
-      $('countryBadge').textContent = player.country === "India" ? "🇮🇳 India" : "✈️ Overseas";
-      $('statusBadge').textContent = player.status === "Capped" ? "🧢 Capped" : "🔰 Uncapped";
-
-      $('statBat').textContent = player.bat; $('barBat').style.width = player.bat + "%";
-      $('statBowl').textContent = player.bowl; $('barBowl').style.width = player.bowl + "%";
-      $('statField').textContent = player.field; $('barField').style.width = player.field + "%";
-      
-      if(!myData.isFinishedBidding && !myData.isEliminated) {
-          const skipBtn = $('skipBtn');
-          skipBtn.disabled = false;
-          skipBtn.classList.remove('opacity-50','cursor-not-allowed');
-          skipBtn.textContent = "SKIP"; 
-          $('skipStatus').textContent = "";
-      }
-      updateBidUI(currentBid, null, null);
+        console.log('New player received:', player.name);
+        
+        // Clear any existing cooldown
+        if (cooldownTimeout) {
+            clearTimeout(cooldownTimeout);
+            cooldownTimeout = null;
+        }
+        
+        // Force hide ALL overlays first
+        document.getElementById('lobbyView').classList.add('hidden');
+        document.getElementById('eliminatedView').classList.add('hidden');
+        document.getElementById('selectionView').classList.add('hidden');
+        document.getElementById('resultView').classList.add('hidden');
+        
+        // Hide cooldown view and show auction view
+        const cooldownView = document.getElementById('cooldownView');
+        const auctionView = document.getElementById('auctionView');
+        
+        cooldownView.classList.add('hidden');
+        cooldownView.style.display = 'none';
+        
+        auctionView.classList.remove('hidden'); 
+        auctionView.style.display = 'flex';
+        
+        // Check spectator mode AFTER showing auction view
+        if(myData && myData.isFinishedBidding) {
+            document.getElementById('spectatorView').classList.remove('hidden');
+        } else {
+            document.getElementById('spectatorView').classList.add('hidden');
+        }
+        
+        // Check eliminated mode
+        if(myData && myData.isEliminated) {
+            document.getElementById('eliminatedView').classList.remove('hidden');
+        }
+        
+        gCurrentPlayer = player;
+        document.getElementById('playerImg').src = player.img; 
+        document.getElementById('playerName').textContent = player.name;
+        document.getElementById('playerRole').textContent = player.role; 
+        document.getElementById('playerRating').textContent = player.rating;
+        document.getElementById('basePrice').textContent = player.basePrice + " Cr";
+        document.getElementById('countryBadge').textContent = player.country === "India" ? "🇮🇳 IND" : "✈️ OS";
+        document.getElementById('statusBadge').textContent = player.status === "Capped" ? "🧢 CAP" : "🔰 UNCAP";
+        document.getElementById('statBat').textContent = player.bat; 
+        document.getElementById('barBat').style.width = player.bat + "%";
+        document.getElementById('statBowl').textContent = player.bowl; 
+        document.getElementById('barBowl').style.width = player.bowl + "%";
+        document.getElementById('statField').textContent = player.field; 
+        document.getElementById('barField').style.width = player.field + "%";
+        
+        if(myData && !myData.isFinishedBidding && !myData.isEliminated) {
+            const sb = document.getElementById('skipBtn'); 
+            sb.disabled=false; 
+            sb.classList.remove('opacity-50','cursor-not-allowed'); 
+            sb.textContent = "SKIP";
+            document.getElementById('skipStatus').textContent = "";
+        }
+        
+        updateBidUI(currentBid, null, null);
     });
 
-    socket.on('timer-update', sec => { $('timerRing').textContent = sec; });
-    socket.on('bid-updated', ({ currentBid, bidderId, bidderName }) => updateBidUI(currentBid, bidderId, bidderName));
+    socket.on('timer-update', sec => { 
+        const ring = document.getElementById('timerRing'); 
+        ring.textContent = sec;
+        
+        if(sec <= 3) {
+            ring.classList.add('pulse-red', 'text-red-500', 'border-red-500'); 
+        } else {
+            ring.classList.remove('pulse-red', 'text-red-500', 'border-red-500');
+        }
+    });
+
+    socket.on('bid-updated', ({ currentBid, bidderId, bidderName }) => {
+        updateBidUI(currentBid, bidderId, bidderName);
+    });
 
     function updateBidUI(amount, bidderId, bidderName) {
-        gCurrentBid = amount;
+        gCurrentBid = amount; 
         gCurrentBidderId = bidderId;
-        $('currentBid').textContent = "₹" + amount.toFixed(2);
-        const badge = $('highestBidderBadge');
-        if(bidderId) { badge.textContent = bidderId === myId ? "YOU" : `${bidderName}`; badge.className = `text-xs px-2 py-1 rounded font-bold ${bidderId === myId ? 'bg-green-600' : 'bg-red-600'}`; }
-        else { badge.textContent = "NO BIDS"; badge.className = "text-xs bg-gray-700 px-2 py-1 rounded"; }
+        
+        document.getElementById('currentBid').textContent = "₹" + amount.toFixed(2);
+        
+        const badge = document.getElementById('highestBidderBadge');
+        if(bidderId) { 
+            badge.textContent = bidderId === myId ? "YOU" : escapeHtml(bidderName); 
+            badge.className = `text-[10px] px-2 py-1 rounded font-bold ${bidderId === myId ? 'bg-green-600 text-white' : 'bg-red-600 text-white'}`; 
+        } else { 
+            badge.textContent = "NO BIDS"; 
+            badge.className = "text-[10px] bg-slate-700 text-gray-300 px-2 py-1 rounded"; 
+        }
+        
         refreshControls();
     }
 
     function refreshControls() {
-        const bidBtn = $('bidBtn'), skipBtn = $('skipBtn'), slider = $('bidSlider');
-        if(myData.isEliminated || myData.isFinishedBidding) {
-            bidBtn.disabled = true; bidBtn.innerHTML = myData.isEliminated ? "ELIMINATED" : "SPECTATING";
-            skipBtn.disabled = true; slider.disabled = true; return;
+        const bidBtn = document.getElementById('bidBtn');
+        const skipBtn = document.getElementById('skipBtn');
+        const slider = document.getElementById('bidSlider');
+        
+        if(!myData) return;
+        
+        if(myData.isEliminated || myData.isFinishedBidding) { 
+            bidBtn.disabled = true; 
+            bidBtn.textContent = myData.isEliminated ? "ELIMINATED" : "SPECTATING"; 
+            skipBtn.disabled = true; 
+            slider.disabled = true; 
+            return; 
         }
         
-        // CHECK OVERSEAS LIMIT
         if(gCurrentPlayer && gCurrentPlayer.country === "Overseas") {
-            const myOverseas = myData.squad.filter(p => p.country === "Overseas").length;
-            if(myOverseas >= MAX_OVERSEAS_SQUAD) {
-                bidBtn.disabled = true; bidBtn.innerHTML = "OS LIMIT REACHED"; slider.disabled = true; return;
+            const osCount = myData.squad.filter(p => p.country === "Overseas").length;
+            if(osCount >= MAX_OS_SQUAD) { 
+                bidBtn.disabled = true; 
+                bidBtn.textContent = "OS LIMIT (8)"; 
+                slider.disabled = true; 
+                return; 
             }
         }
-
-        const minBid = gCurrentBid + 0.25;
-        if(minBid > myData.purse) { bidBtn.disabled = true; bidBtn.innerHTML = "NO FUNDS"; slider.disabled = true; return; }
-        if(myData.squad.length >= MAX_SQUAD) { bidBtn.disabled = true; bidBtn.innerHTML = "SQUAD FULL"; return; }
-
-        if (gCurrentBidderId === myId) {
-            bidBtn.disabled = true; bidBtn.innerHTML = "YOU LEAD"; skipBtn.disabled = true; slider.disabled = true;
+        
+        const minBid = gCurrentBid + BID_INCREMENT;
+        
+        if(minBid > myData.purse) { 
+            bidBtn.disabled = true; 
+            bidBtn.textContent = "NO FUNDS"; 
+            slider.disabled = true; 
+            return; 
+        }
+        
+        if(myData.squad.length >= MAX_SQUAD) { 
+            bidBtn.disabled = true; 
+            bidBtn.textContent = "SQUAD FULL"; 
+            slider.disabled = true;
+            return; 
+        }
+        
+        if (gCurrentBidderId === myId) { 
+            bidBtn.disabled = true; 
+            bidBtn.textContent = "WINNING"; 
+            skipBtn.disabled = true; 
+            slider.disabled = true; 
         } else {
-            slider.disabled = false; slider.min = minBid; slider.max = myData.purse; slider.value = minBid; selectedBid = minBid;
-            $('sliderValueDisplay').textContent = "₹" + minBid.toFixed(2);
-            bidBtn.disabled = false; bidBtn.innerHTML = `BID (₹${selectedBid.toFixed(2)})`;
-            if(skipBtn.textContent !== "You skipped this player") skipBtn.disabled = false;
+            slider.disabled = false; 
+            slider.min = minBid; 
+            slider.max = myData.purse; 
+            slider.value = minBid; 
+            selectedBid = minBid;
+            
+            document.getElementById('sliderValueDisplay').textContent = "₹" + minBid.toFixed(2);
+            bidBtn.disabled = false; 
+            bidBtn.textContent = `BID (₹${selectedBid.toFixed(2)})`;
+            
+            if(skipBtn.textContent !== "SKIPPED") { 
+                skipBtn.disabled = false; 
+                skipBtn.classList.remove('opacity-50','cursor-not-allowed'); 
+            }
         }
     }
 
-    $('bidSlider').oninput = function() { selectedBid = parseFloat(this.value); $('sliderValueDisplay').textContent = "₹" + selectedBid.toFixed(2); $('bidBtn').innerHTML = `BID (₹${selectedBid.toFixed(2)})`; }
-    $('bidBtn').onclick = () => socket.emit('place-bid', { roomId: currentRoom, bidAmount: selectedBid });
-    $('skipBtn').onclick = () => { socket.emit('skip-for-me', { roomId: currentRoom }); $('skipBtn').disabled=true; $('skipBtn').textContent = "You skipped this player"; };
+    els.slider.oninput = function() { 
+        selectedBid = parseFloat(this.value); 
+        document.getElementById('sliderValueDisplay').textContent = "₹" + selectedBid.toFixed(2); 
+        document.getElementById('bidBtn').textContent = `BID (₹${selectedBid.toFixed(2)})`; 
+    };
     
-    socket.on('player-sold', ({ player, price, teamName }) => showCooldown("SOLD", `${player.name} sold to ${teamName} for ₹${price}Cr`));
-    socket.on('player-unsold', ({ player }) => showCooldown("UNSOLD", `${player.name} went unsold`));
+    document.getElementById('bidBtn').onclick = () => {
+        if (!myData || myData.isEliminated || myData.isFinishedBidding) return;
+        socket.emit('place-bid', { roomId: currentRoom, bidAmount: selectedBid, userId: myUserId });
+    };
+    
+    document.getElementById('skipBtn').onclick = () => { 
+        socket.emit('skip-for-me', { roomId: currentRoom, userId: myUserId }); 
+        const sb = document.getElementById('skipBtn'); 
+        sb.disabled=true; 
+        sb.textContent = "SKIPPED"; 
+        sb.classList.add('opacity-50','cursor-not-allowed'); 
+    };
+    
+    socket.on('player-sold', ({ player, price, teamName }) => {
+        showCooldown("SOLD", `${player.name} sold to ${escapeHtml(teamName)} for ₹${price}Cr`);
+    });
+    
+    socket.on('player-unsold', ({ player }) => {
+        showCooldown("UNSOLD", `${player.name} went unsold`);
+    });
 
     function showCooldown(title, subtext) {
-        $('auctionView').style.display = 'none'; $('cooldownView').style.display = 'block';
-        $('soldStatusTitle').textContent = title;
-        $('soldStatusTitle').className = title === "SOLD" ? "text-5xl font-bold text-green-400 mb-2" : "text-5xl font-bold text-red-400 mb-2";
-        $('soldStatusText').textContent = subtext;
+        console.log('Showing cooldown:', title, subtext);
+        
+        // Hide auction view completely
+        const auctionView = document.getElementById('auctionView');
+        auctionView.style.display = 'none'; 
+        auctionView.classList.add('hidden');
+        
+        // Show cooldown view
+        const cd = document.getElementById('cooldownView'); 
+        cd.classList.remove('hidden');
+        cd.style.display = 'flex'; 
+        
+        document.getElementById('soldStatusTitle').textContent = title;
+        document.getElementById('soldStatusTitle').className = title === "SOLD" 
+            ? "text-5xl font-bold text-green-400 mb-2" 
+            : "text-5xl font-bold text-red-400 mb-2";
+        document.getElementById('soldStatusText').textContent = subtext;
+        
+        // Clear any existing timeout
+        if (cooldownTimeout) {
+            clearTimeout(cooldownTimeout);
+        }
+        
+        // Set failsafe timeout (server should send new-player before this)
+        cooldownTimeout = setTimeout(() => {
+            console.log('Cooldown timeout reached - failsafe triggered');
+            cd.classList.add('hidden');
+            cd.style.display = 'none';
+            cooldownTimeout = null;
+        }, 10000); // 10 second failsafe
     }
 
     socket.on('start-selection-phase', () => {
-        $('auctionView').style.display = 'none'; $('cooldownView').style.display = 'none'; $('spectatorView').style.display = 'none'; 
-        $('selectionView').style.display = 'flex'; renderSelectionList();
+        if (cooldownTimeout) {
+            clearTimeout(cooldownTimeout);
+            cooldownTimeout = null;
+        }
+        
+        document.getElementById('auctionView').style.display = 'none'; 
+        document.getElementById('cooldownView').style.display = 'none'; 
+        document.getElementById('spectatorView').style.display = 'none';
+        document.getElementById('selectionView').classList.remove('hidden'); 
+        renderSelectionList();
     });
 
     function renderSelectionList() {
-        const container = $('selectionList'); container.innerHTML = '';
+        const container = document.getElementById('selectionList'); 
+        container.innerHTML = '';
+        
+        if (!mySquadArr || mySquadArr.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-center col-span-2">No players in squad</p>';
+            return;
+        }
+        
         mySquadArr.forEach(p => {
             const osBadge = p.country === "Overseas" ? "✈️" : "";
             const div = document.createElement('div');
-            div.className = "bg-slate-800 p-2 rounded flex justify-between items-center cursor-pointer hover:bg-slate-700";
-            div.innerHTML = `<div><div class="font-bold text-sm">${p.name} ${osBadge}</div><div class="text-xs text-yellow-500">R: ${p.rating} | ₹${p.soldPrice}</div></div><input type="checkbox" class="accent-green-500 w-5 h-5 player-select-cb" value="${p.id}" data-country="${p.country}">`;
+            div.className = "bg-slate-800 p-3 rounded-lg flex justify-between items-center border border-slate-700";
+            div.innerHTML = `<div><div class="font-bold text-sm text-white">${escapeHtml(p.name)} ${osBadge}</div><div class="text-xs text-yellow-500">R: ${p.rating} | ₹${p.soldPrice}</div></div><input type="checkbox" class="accent-green-500 w-6 h-6 player-select-cb" value="${p.id}" data-country="${p.country}">`;
             container.appendChild(div);
         });
+        
         const cbs = document.querySelectorAll('.player-select-cb');
         cbs.forEach(cb => cb.addEventListener('change', updateSelectionUI));
     }
@@ -451,65 +740,94 @@
         const osCount = Array.from(checked).filter(cb => cb.dataset.country === "Overseas").length;
         const req = Math.min(11, mySquadArr.length);
         
-        $('selectionCount').textContent = `${count} / ${req} Selected`;
-        const osEl = $('overseasCount');
+        document.getElementById('selectionCount').textContent = `${count} / ${req} Selected`;
+        
+        const osEl = document.getElementById('overseasCount'); 
         osEl.textContent = `${osCount} / 4 Overseas`;
         osEl.className = osCount > 4 ? "text-red-500 font-bold" : "text-blue-400";
-
+        
         if (count === req && osCount <= 4) {
-            $('leadershipControls').classList.remove('hidden');
-            populateLeadership(checked);
-            $('submitTeamBtn').disabled = false;
+            document.getElementById('leadershipControls').classList.remove('hidden'); 
+            populateLeadership(checked); 
+            document.getElementById('submitTeamBtn').disabled = false;
         } else {
-            $('leadershipControls').classList.add('hidden');
-            $('submitTeamBtn').disabled = true;
+            document.getElementById('leadershipControls').classList.add('hidden'); 
+            document.getElementById('submitTeamBtn').disabled = true;
         }
     }
 
     function populateLeadership(checkedBoxes) {
-        const c = $('selectCaptain'), vc = $('selectViceCaptain');
-        c.innerHTML = ''; vc.innerHTML = '';
+        const c = document.getElementById('selectCaptain');
+        const vc = document.getElementById('selectViceCaptain'); 
+        c.innerHTML = ''; 
+        vc.innerHTML = '';
+        
         checkedBoxes.forEach(cb => {
             const p = mySquadArr.find(pl => pl.id === cb.value);
-            c.add(new Option(`${p.name} (${p.rating})`, p.id));
-            vc.add(new Option(`${p.name} (${p.rating})`, p.id));
+            if (p) {
+                c.add(new Option(`${p.name} (${p.rating})`, p.id)); 
+                vc.add(new Option(`${p.name} (${p.rating})`, p.id));
+            }
         });
+        
         if(vc.options.length>1) vc.selectedIndex=1;
     }
 
-    $('submitTeamBtn').onclick = () => {
+    document.getElementById('submitTeamBtn').onclick = () => {
         const ids = Array.from(document.querySelectorAll('.player-select-cb:checked')).map(cb => cb.value);
-        const cId = $('selectCaptain').value, vcId = $('selectViceCaptain').value;
-        if(cId === vcId) return notify("Captain & VC must be different", "error");
-        socket.emit('submit-playing-11', { roomId: currentRoom, playerIds: ids, cId, vcId });
-        $('selectionView').innerHTML = `<h2 class="text-2xl animate-pulse text-yellow-400">Team Submitted! Waiting...</h2>`;
+        const cId = document.getElementById('selectCaptain').value;
+        const vcId = document.getElementById('selectViceCaptain').value;
+        
+        if(cId === vcId) {
+            return Toastify({ text: "Captain & Vice-Captain must be different", duration: 3000, style: { background: "#dc2626" } }).showToast();
+        }
+        
+        socket.emit('submit-playing-11', { 
+            roomId: currentRoom, 
+            playerIds: ids, 
+            cId, 
+            vcId, 
+            userId: myUserId 
+        });
+        
+        document.getElementById('selectionView').innerHTML = `<div class="flex flex-col items-center justify-center h-full"><h2 class="text-3xl animate-pulse text-yellow-400 text-center">Team Submitted!<br>Waiting for results...</h2></div>`;
     };
 
     socket.on('game-over-results', ({ winner, rankings }) => {
-        $('selectionView').style.display = 'none'; $('auctionView').style.display = 'none'; $('resultView').style.display = 'flex';
-        $('winnerName').textContent = winner.name;
-        $('winnerScore').textContent = `${winner.totalScore} Total Rating`;
-        const list = $('rankingList'); list.innerHTML = '';
-        rankings.forEach((t, i) => list.innerHTML += `<div class="flex justify-between p-2 ${i===0?'bg-green-900':'bg-slate-700'} rounded"><span>#${i+1} ${t.name}</span><span>${t.totalScore} pts</span></div>`);
+        document.getElementById('selectionView').classList.add('hidden'); 
+        document.getElementById('resultView').classList.remove('hidden');
+        
+        document.getElementById('winnerName').textContent = winner.name; 
+        document.getElementById('winnerScore').textContent = `${winner.totalScore} Total Rating`;
+        
+        const list = document.getElementById('rankingList'); 
+        list.innerHTML = '';
+        
+        rankings.forEach((t, i) => {
+            list.innerHTML += `<div class="flex justify-between p-3 ${i===0?'bg-green-900/50 border border-green-700':'bg-slate-700/50'} rounded-lg mb-2"><span>#${i+1} ${escapeHtml(t.name)}</span><span class="font-bold">${t.totalScore}</span></div>`;
+        });
     });
 
-    function updatePurse(amount) { $('myPurse').textContent = "₹" + (amount||0).toFixed(2); }
+    function updatePurse(amount) { 
+        document.getElementById('myPurse').textContent = "₹" + (amount||0).toFixed(2); 
+    }
+    
     function renderMySquad(squad) {
-        const c = $('mySquadList'); 
-        $('squadCount').textContent = `${squad.length}/${MAX_SQUAD}`;
-        c.innerHTML = squad.length ? '' : '<p class="text-gray-500 text-sm">Empty.</p>';
+        const c = els.squadList; 
+        document.getElementById('squadBadgeCount').textContent = squad.length; 
+        document.getElementById('squadCount').textContent = `${squad.length}/${MAX_SQUAD}`;
         
-        squad.forEach(p => c.innerHTML += `
-            <div class="bg-slate-800 p-2 rounded flex items-center justify-between mb-1">
-                <div class="flex items-center gap-2 overflow-hidden">
-                    <span class="text-sm font-bold truncate">${p.name}</span>
-                    <span class="text-[10px] text-blue-200 bg-blue-900/50 px-1.5 py-0.5 rounded border border-blue-800 shrink-0">
-                        ${p.role}
-                    </span>
-                    ${p.country==="Overseas" ? '<span class="text-[10px] shrink-0">✈️</span>' : ''}
-                </div>
-                <span class="text-sm text-yellow-500 font-bold ml-2 shrink-0">${p.rating}</span>
-            </div>`);
+        c.innerHTML = squad.length ? '' : '<p class="text-gray-500 text-sm text-center mt-10">Empty.</p>';
+        
+        squad.forEach(p => {
+            c.innerHTML += `<div class="bg-slate-800 p-2 rounded flex items-center justify-between mb-1 border border-slate-700"><div class="flex items-center gap-2 overflow-hidden"><span class="text-sm font-bold truncate text-white">${escapeHtml(p.name)}</span><span class="text-[10px] text-blue-200 bg-blue-900/50 px-1.5 py-0.5 rounded border border-blue-800 shrink-0 uppercase">${p.role}</span>${p.country==="Overseas"?'<span class="text-[10px] shrink-0">✈️</span>':''}</div><div class="flex items-center gap-2"><span class="text-xs text-gray-400">₹${p.soldPrice}</span><span class="text-sm text-yellow-500 font-bold">${p.rating}</span></div></div>`;
+        });
+    }
+    
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
   </script>
 </body>
