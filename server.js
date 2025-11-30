@@ -379,11 +379,11 @@ io.on("connection", (socket) => {
           const factor = p.soldPrice / p.basePrice;
           let finalRating = p.rating;
 
-          if (factor > 6) {
+          if (factor >= 7) {
               finalRating = p.rating - 5; // Penalty for overpurchasing
           } else if (factor < 2) {
               finalRating = p.rating + 5; // Reward for good deal
-          }
+          } else if (factor == 2 ) {finalRating = p.rating}
           // Else: Rating stays the same
 
           return Math.max(0, finalRating); // Ensure rating doesn't go negative
