@@ -592,9 +592,11 @@ io.on("connection", (socket) => {
       const getEffectiveRating = (p) => {
           const factor = p.soldPrice / p.basePrice;
           let finalRating = p.rating;
-          if (p.rating > 88 && factor >= 8) finalRating = p.rating - 5;
+          if (p.rating > 91 && factor <= 6) finalRating = p.rating +2 ;
+          if (p.rating > 91 && factor >= 9) finalRating = p.rating -5 ;
+          else if (p.rating > 88 && factor >= 8) finalRating = p.rating - 5;
           else if (p.rating > 88 && factor < 6) finalRating = p.rating + 5;
-          else if (factor < 2) finalRating = p.rating + 5;
+          else if (factor < 3) finalRating = p.rating + 5;
           return Math.max(0, finalRating);
       };
 
