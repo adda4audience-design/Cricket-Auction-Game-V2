@@ -1,4 +1,4 @@
-// ==========================
+8// ==========================
 //  CRICKET AUCTION SERVER (RENDER READY WITH REDIS)
 // ==========================
 
@@ -611,6 +611,72 @@ io.on("connection", (socket) => {
               score += (getEffectiveRating(p) + leadershipBonus);
           }
       });
+
+      // ... (existing score calculation loop ends here)
+
+      // ============================================================
+      // NEW LOGIC: TEAM BALANCE STRATEGY
+      // ============================================================
+      
+      let wkCount = 0;
+      let batCount = 0;
+      let bowlCount = 0;
+      let arCount = 0;
+
+      // 1. Count Roles
+      selectedPlayers.forEach(p => {
+          const r = p.role.toLowerCase();
+          if (r.includes("wicket") || r === "wk") wkCount++;
+          else if (r === "batsman" || r === "bat") batCount++;
+          else if (r === "bowler" || r === "bowl") bowlCount++;
+          else if (r.includes("all") || r === "ar") arCount++;
+      });
+
+      let balancePenalty = 0;
+      const penaltyLog = []; // To track why points were cut (optional for debugging)
+
+      // 2. CONSTRAINT: Too Many Wicketkeepers
+      // If WKs > 2, minus 20 points per extra WK
+      if (wkCount > 2) {
+          const extraWks = wkCount - 2;
+          const pen = extraWks * 20;
+          balancePenalty += pen;
+          penaltyLog.push(`Too many WKs (-${pen})`);
+      }
+
+      // 3. CONSTRAINT: Bowling Depth
+      // A team needs 5 bowling options (Bowlers + ARs). 
+      // If < 5, minus 25 points per missing option.
+      const bowlingOptions = bowlCount + arCount;
+      if (bowlingOptions < 5) {
+          const missingOptions = 5 - bowlingOptions;
+          const pen = missingOptions * 25;
+          balancePenalty += pen;
+          penaltyLog.push(`Weak Bowling (-${pen})`);
+      }
+
+      // 4. CONSTRAINT: Batting Depth
+      // A team needs at least 3 pure Batsmen (excluding ARs/WKs) to be stable
+      if (batCount < 3) {
+          const missingBats = 3 - batCount;
+          const pen = missingBats * 15;
+          balancePenalty += pen;
+          penaltyLog.push(`Weak Batting Core (-${pen})`);
+      }
+
+      // Apply Penalty to Score
+      score -= balancePenalty;
+
+      // Prevent negative scores
+      if (score < 0) score = 0;
+
+      console.log(`Team ${team.name} Balance Check:`, { wkCount, batCount, bowlCount, arCount, penalty: balancePenalty });
+
+      // ============================================================
+      // END NEW LOGIC
+      // ============================================================
+
+      team.totalScore = Math.round(score * 100) / 100; // (This is existing code)
 
       team.totalScore = Math.round(score * 100) / 100;
       team.submitted11 = true;
